@@ -25,6 +25,7 @@ app.get('/api/health', (req, res) => {
 app.use('/api/auth', require('./routes/authRoutes'));
 app.use('/api/users', require('./routes/userRoutes'));
 app.use('/api/vehicles', require('./routes/vehicleRoutes'));
+app.use('/api/commutes', require('./routes/commuteRoutes'));
 
 // 404 Handler for undefined routes
 app.use((req, res) => {
