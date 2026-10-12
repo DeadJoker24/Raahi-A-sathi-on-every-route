@@ -91,3 +91,39 @@ export const vehicleService = {
     });
   }
 };
+
+// Commute API calls (Driver & Shared)
+export const commuteService = {
+  createCommute: (commuteData) => {
+    return request('/commutes', {
+      method: 'POST',
+      body: JSON.stringify(commuteData)
+    });
+  },
+
+  getMyCommutes: (status = '') => {
+    const endpoint = status ? `/commutes/my?status=${encodeURIComponent(status)}` : '/commutes/my';
+    return request(endpoint, {
+      method: 'GET'
+    });
+  },
+
+  getCommuteById: (id) => {
+    return request(`/commutes/${id}`, {
+      method: 'GET'
+    });
+  },
+
+  updateCommute: (id, commuteData) => {
+    return request(`/commutes/${id}`, {
+      method: 'PUT',
+      body: JSON.stringify(commuteData)
+    });
+  },
+
+  cancelCommute: (id) => {
+    return request(`/commutes/${id}/cancel`, {
+      method: 'PATCH'
+    });
+  }
+};

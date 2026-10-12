@@ -1143,3 +1143,367 @@ body {
   color: var(--text-secondary);
   font-size: 0.9rem;
 }
+
+/* =======================================================
+   DRIVER COMMUTE STYLES (SPRINT 2)
+   ======================================================= */
+.linked-vehicle-banner {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  background: var(--driver-bg);
+  border: 1px solid rgba(59, 130, 246, 0.25);
+  border-radius: var(--radius-md);
+  padding: 0.75rem 1rem;
+  font-size: 0.85rem;
+  color: #93c5fd;
+  margin-bottom: 1.5rem;
+}
+
+.linked-vehicle-banner code {
+  background: rgba(15, 23, 42, 0.6);
+  padding: 0.15rem 0.4rem;
+  border-radius: 4px;
+  font-family: monospace;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.form-grid-2 {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.25rem;
+}
+
+@media (min-width: 640px) {
+  .form-grid-2 {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.textarea-input {
+  resize: vertical;
+  min-height: 80px;
+}
+
+/* Commute Filter Bar */
+.commute-filter-bar {
+  display: flex;
+  margin-bottom: 1.5rem;
+}
+
+.filter-pill-group {
+  display: inline-flex;
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 0.3rem;
+  gap: 0.25rem;
+  flex-wrap: wrap;
+}
+
+.filter-pill {
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  font-family: inherit;
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding: 0.4rem 0.9rem;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.filter-pill:hover {
+  color: var(--text-primary);
+  background: var(--bg-card-hover);
+}
+
+.filter-pill.active {
+  background: var(--primary);
+  color: #ffffff;
+}
+
+/* Empty Commute State */
+.empty-commute-card {
+  text-align: center;
+  padding: 3.5rem 1.5rem;
+  max-width: 550px;
+  margin: 0 auto;
+}
+
+.empty-icon-circle {
+  width: 64px;
+  height: 64px;
+  background: rgba(59, 130, 246, 0.1);
+  border: 1px solid rgba(59, 130, 246, 0.2);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--primary);
+  margin: 0 auto 1.25rem;
+}
+
+.empty-commute-card h3 {
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.empty-commute-card p {
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  line-height: 1.5;
+  margin-bottom: 1rem;
+}
+
+/* Commutes List & Cards */
+.commutes-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.commute-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: 1.5rem 1.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  transition: border-color 0.2s ease;
+}
+
+.commute-card:hover {
+  border-color: rgba(59, 130, 246, 0.4);
+}
+
+.commute-card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.commute-route {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 1.2rem;
+  font-weight: 700;
+  flex-wrap: wrap;
+}
+
+.origin-point {
+  color: var(--text-primary);
+}
+
+.route-arrow {
+  color: var(--primary);
+  font-weight: 900;
+}
+
+.dest-point {
+  color: #60a5fa;
+}
+
+/* Status Badges */
+.status-badge {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  padding: 0.25rem 0.65rem;
+  border-radius: 9999px;
+  text-transform: uppercase;
+}
+
+.status-scheduled {
+  background: rgba(59, 130, 246, 0.15);
+  color: #60a5fa;
+  border: 1px solid rgba(59, 130, 246, 0.3);
+}
+
+.status-cancelled {
+  background: rgba(239, 68, 68, 0.15);
+  color: #fca5a5;
+  border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+.status-completed {
+  background: rgba(100, 116, 139, 0.2);
+  color: #cbd5e1;
+  border: 1px solid rgba(100, 116, 139, 0.3);
+}
+
+/* Commute Details Grid */
+.commute-details-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
+.commute-detail-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+}
+
+.detail-icon {
+  color: var(--primary);
+  flex-shrink: 0;
+}
+
+.price-highlight {
+  color: #34d399;
+  font-weight: 700;
+}
+
+.commute-notes-box {
+  background: var(--bg-main);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  padding: 0.6rem 0.9rem;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  line-height: 1.4;
+}
+
+.commute-notes-box strong {
+  color: var(--text-primary);
+}
+
+/* Commute Actions */
+.commute-card-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border-subtle);
+  flex-wrap: wrap;
+}
+
+.btn-action-small {
+  background: var(--bg-main);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-primary);
+  font-family: inherit;
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding: 0.4rem 0.8rem;
+  border-radius: var(--radius-sm);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-action-small:hover {
+  background: var(--bg-card-hover);
+  border-color: var(--primary);
+}
+
+.btn-cancel-trigger:hover {
+  border-color: var(--danger);
+  color: var(--danger);
+}
+
+.cancel-confirm-box {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: var(--danger-bg);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  padding: 0.3rem 0.6rem;
+  border-radius: var(--radius-sm);
+}
+
+.confirm-text {
+  font-size: 0.8rem;
+  color: #fca5a5;
+  font-weight: 600;
+}
+
+.btn-danger-small {
+  background: var(--danger);
+  color: #ffffff;
+  border: none;
+  font-family: inherit;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.3rem 0.6rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.btn-danger-small:hover {
+  opacity: 0.9;
+}
+
+.btn-secondary-small {
+  background: transparent;
+  color: var(--text-secondary);
+  border: 1px solid var(--border-subtle);
+  font-family: inherit;
+  font-size: 0.75rem;
+  padding: 0.3rem 0.5rem;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+/* Modal Overlay & Card */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  z-index: 100;
+}
+
+.modal-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: 2rem;
+  width: 100%;
+  max-width: 540px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.25rem;
+}
+
+.modal-header h3 {
+  font-size: 1.3rem;
+  font-weight: 700;
+}
+
+.btn-close-modal {
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  font-size: 1.5rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.btn-close-modal:hover {
+  color: var(--text-primary);
+}

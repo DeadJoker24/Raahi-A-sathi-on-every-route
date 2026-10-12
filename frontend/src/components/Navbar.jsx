@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { Navigation, LogOut, User, Car, Compass } from 'lucide-react';
+import { Navigation, LogOut, User, Car, Compass, Route } from 'lucide-react';
 
 export const Navbar = () => {
   const { user, isAuthenticated, logout } = useAuth();
@@ -33,18 +33,24 @@ export const Navbar = () => {
               <Link to={dashboardUrl} className="nav-link">
                 Dashboard
               </Link>
+
+              {user?.role === 'DRIVER' && (
+                <>
+                  <Link to="/driver/commutes" className="nav-link">
+                    <Route size={16} />
+                    <span>My Commutes</span>
+                  </Link>
+                  <Link to="/driver/vehicle" className="nav-link">
+                    <Car size={16} />
+                    <span>My Vehicle</span>
+                  </Link>
+                </>
+              )}
               
               <Link to="/profile" className="nav-link">
                 <User size={16} />
                 <span>Profile</span>
               </Link>
-
-              {user?.role === 'DRIVER' && (
-                <Link to="/driver/vehicle" className="nav-link">
-                  <Car size={16} />
-                  <span>My Vehicle</span>
-                </Link>
-              )}
 
               <div className="user-badge-container">
                 <span className={`role-badge ${user?.role === 'DRIVER' ? 'badge-driver' : 'badge-passenger'}`}>

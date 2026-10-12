@@ -10,6 +10,8 @@ import { DriverDashboard } from './pages/DriverDashboard';
 import { PassengerDashboard } from './pages/PassengerDashboard';
 import { ProfilePage } from './pages/ProfilePage';
 import { VehiclePage } from './pages/VehiclePage';
+import { PublishCommutePage } from './pages/PublishCommutePage';
+import { MyCommutesPage } from './pages/MyCommutesPage';
 
 function App() {
   return (
@@ -30,6 +32,24 @@ function App() {
                 element={
                   <ProtectedRoute allowedRole="DRIVER">
                     <DriverDashboard />
+                  </ProtectedRoute>
+                } 
+              />
+
+              <Route 
+                path="/driver/commutes" 
+                element={
+                  <ProtectedRoute allowedRole="DRIVER">
+                    <MyCommutesPage />
+                  </ProtectedRoute>
+                } 
+              />
+
+              <Route 
+                path="/driver/commutes/new" 
+                element={
+                  <ProtectedRoute allowedRole="DRIVER">
+                    <PublishCommutePage />
                   </ProtectedRoute>
                 } 
               />

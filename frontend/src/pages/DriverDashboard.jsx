@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { vehicleService } from '../services/api';
+import { vehicleService, commuteService } from '../services/api';
 import { 
   Car, 
   User, 
@@ -11,31 +11,58 @@ import {
   Clock, 
   AlertCircle,
   PlusCircle,
-  Sparkles
+  Calendar,
+  IndianRupee,
+  Users
 } from 'lucide-react';
 
 export const DriverDashboard = () => {
   const { user } = useAuth();
   const [vehicle, setVehicle] = useState(null);
+  const [upcomingCommutes, setUpcomingCommutes] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // Check if driver has a vehicle registered
   useEffect(() => {
-    const fetchVehicleStatus = async () => {
+    const fetchDashboardData = async () => {
+      setLoading(true);
       try {
-        const res = await vehicleService.getMyVehicle();
-        if (res.data?.vehicle) {
-          setVehicle(res.data.vehicle);
+        // Fetch vehicle status
+        const vRes = await vehicleService.getMyVehicle();
+        if (vRes.data?.vehicle) {
+          setVehicle(vRes.data.vehicle);
+        }
+
+        // Fetch driver's scheduled commutes
+        const cRes = await commuteService.getMyCommutes('SCHEDULED');
+        if (cRes.data?.commutes) {
+          // Filter to only future departures
+          const futureOnes = cRes.data.commutes.filter(
+            c => new Date(c.departure_datetime) > new Date()
+          );
+          setUpcomingCommutes(futureOnes);
         }
       } catch (err) {
-        console.warn('Vehicle check note:', err.message);
+        console.warn('Dashboard data fetch note:', err.message);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchVehicleStatus();
+    fetchDashboardData();
   }, []);
+
+  const formatDate = (dateStr) => {
+    if (!dateStr) return 'N/A';
+    const d = new Date(dateStr);
+    return d.toLocaleString('en-US', {
+      month: 'short',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit'
+    });
+  };
+
+  const nextCommute = upcomingCommutes.length > 0 ? upcomingCommutes[0] : null;
 
   return (
     <div className="dashboard-container">
@@ -54,13 +81,17 @@ export const DriverDashboard = () => {
         </div>
 
         <div className="dashboard-quick-actions">
-          <Link to="/driver/vehicle" className="btn-primary">
-            <Car size={16} />
-            <span>{vehicle ? 'Update Vehicle' : 'Register Vehicle'}</span>
+          <Link to="/driver/commutes/new" className="btn-primary">
+            <PlusCircle size={16} />
+            <span>Publish Commute</span>
           </Link>
-          <Link to="/profile" className="btn-secondary">
-            <User size={16} />
-            <span>My Profile</span>
+          <Link to="/driver/commutes" className="btn-secondary">
+            <Route size={16} />
+            <span>My Commutes</span>
+          </Link>
+          <Link to="/driver/vehicle" className="btn-secondary">
+            <Car size={16} />
+            <span>{vehicle ? 'My Vehicle' : 'Add Vehicle'}</span>
           </Link>
         </div>
       </div>
@@ -102,7 +133,7 @@ export const DriverDashboard = () => {
           ) : (
             <>
               <h3>No Vehicle Linked Yet</h3>
-              <p>Add your car, bike, or SUV details so passengers know what vehicle to look for.</p>
+              <p>Add your vehicle details so you can start publishing commutes.</p>
               <div className="stat-footer">
                 <Link to="/driver/vehicle" className="text-link">
                   <PlusCircle size={15} />
@@ -113,22 +144,52 @@ export const DriverDashboard = () => {
           )}
         </div>
 
-        {/* Placeholder: My Commutes (Future Sprint) */}
-        <div className="card placeholder-card">
-          <div className="placeholder-top">
-            <div className="card-icon">
-              <Route size={24} />
-            </div>
-            <span className="placeholder-tag">Coming in Sprint 2</span>
+        {/* Active Commutes Overview Card (Sprint 2 Live Component) */}
+        <div className="card stat-card" style={{ gridColumn: 'span 1' }}>
+          <div className="stat-header">
+            <span>Active Commutes</span>
+            <span className="role-badge badge-driver">
+              {upcomingCommutes.length} SCHEDULED
+            </span>
           </div>
-          <h3>My Commutes</h3>
-          <p>
-            Publish your daily scheduled commutes (e.g. Home &harr; College/Office). 
-            Specify departure times, empty seat count, and estimated fuel contributions.
-          </p>
-          <div className="placeholder-note">
-            <Clock size={14} />
-            <span>Route creation & seat availability will be unlocked in Sprint 2.</span>
+
+          {nextCommute ? (
+            <div>
+              <span style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+                Next Upcoming Journey
+              </span>
+              <h3 style={{ fontSize: '1.15rem', marginTop: '0.2rem', marginBottom: '0.5rem' }}>
+                {nextCommute.origin} &rarr; {nextCommute.destination}
+              </h3>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.3rem', fontSize: '0.85rem', color: 'var(--text-secondary)' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+                  <Calendar size={14} />
+                  <span>{formatDate(nextCommute.departure_datetime)}</span>
+                </div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+                  <Users size={14} />
+                  <span>{nextCommute.available_seats} of {nextCommute.total_seats} seats free</span>
+                  <span>&bull;</span>
+                  <span>₹{parseFloat(nextCommute.price_per_seat).toFixed(0)} / seat</span>
+                </div>
+              </div>
+            </div>
+          ) : (
+            <div>
+              <h3>No Upcoming Commutes</h3>
+              <p>
+                Heading somewhere today or this week? Publish your route to share seats and split fuel costs.
+              </p>
+            </div>
+          )}
+
+          <div className="stat-footer" style={{ display: 'flex', justifyContent: 'space-between', width: '100%' }}>
+            <Link to="/driver/commutes" className="text-link">
+              View all ({upcomingCommutes.length}) &rarr;
+            </Link>
+            <Link to="/driver/commutes/new" className="text-link">
+              + Publish new
+            </Link>
           </div>
         </div>
       </div>
